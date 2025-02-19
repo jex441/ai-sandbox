@@ -170,16 +170,3 @@ if result:
     print(f"Confirmation: {result.confirmation_message}")
 else:
     print("This doesn't appear to be a desired physical outcome.")
-
-
-# --------------------------------------------------------------
-# Step 5: Test the chain with an invalid input
-# --------------------------------------------------------------
-
-user_input = input("What is your desired physical outcome? ")
-
-result = process_desired_outcome(user_input)
-if result:
-    print(f"Confirmation: {result.confirmation_message}")
-else:
-    print("This doesn't appear to be related to improving physical fitness.")

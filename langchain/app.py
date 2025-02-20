@@ -24,16 +24,20 @@ config = {"configurable": {"thread_id": "abc123"}}
 
 user_input = input("Enter your query: ")
 
-for chunk in agent_executor.stream(
-    {"messages": [HumanMessage(content=user_input)]}, config
+for step, metadata in agent_executor.stream(
+    {"messages": [HumanMessage(content=user_input)]},
+    config,
+    stream_mode="messages",
 ):
-    print(chunk)
-    print("----")
+    if metadata["langgraph_node"] == "agent" and (text := step.text()):
+        print(text, end="|")
 
 user_input_2 = input("Enter your follow up query: ")
 
-for chunk in agent_executor.stream(
-    {"messages": [HumanMessage(content=user_input_2)]}, config
+for step, metadata in agent_executor.stream(
+    {"messages": [HumanMessage(content=user_input_2)]},
+    config,
+    stream_mode="messages",
 ):
-    print(chunk)
-    print("----")
+    if metadata["langgraph_node"] == "agent" and (text := step.text()):
+        print(text, end="|")

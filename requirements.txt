@@ -1,3 +1,7 @@
+langchain_community
+langchain_core
+langgraph
+
 requests
 ipykernel
 python-dotenv

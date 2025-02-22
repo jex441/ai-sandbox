@@ -14,13 +14,9 @@ import os
 if not os.environ.get("OPENAI_API_KEY"):
   os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
 
-from langchain.chat_models import init_chat_model
-
 llm = init_chat_model("gpt-4o-mini", model_provider="openai")
-
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 vector_store = InMemoryVectorStore(embeddings)
-
 
 # Load and chunk contents of the blog
 loader = WebBaseLoader(
@@ -41,7 +37,6 @@ _ = vector_store.add_documents(documents=all_splits)
 
 # Define prompt for question-answering
 prompt = hub.pull("rlm/rag-prompt")
-
 
 # Define state for application
 class State(TypedDict):

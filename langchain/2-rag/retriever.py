@@ -18,13 +18,15 @@ llm = init_chat_model("gpt-4o-mini", model_provider="openai")
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
 vector_store = InMemoryVectorStore(embeddings)
 
+url_input = input("Enter the URL of the blog: ")
+
 # Load and chunk contents of the blog
 loader = WebBaseLoader(
-    web_paths=("https://lilianweng.github.io/posts/2023-06-23-agent/",),
+    web_paths=(url_input,),
     bs_kwargs=dict(
-        parse_only=bs4.SoupStrainer(
-            class_=("post-content", "post-title", "post-header")
-        )
+        # parse_only=bs4.SoupStrainer(
+        #     class_=("post-content", "post-title", "post-header")
+        # )
     ),
 )
 docs = loader.load()
@@ -63,7 +65,9 @@ graph_builder = StateGraph(State).add_sequence([retrieve, generate])
 graph_builder.add_edge(START, "retrieve")
 graph = graph_builder.compile()
 
+user_input = input("Enter your question: ")
+
 for message, metadata in graph.stream(
-    {"question": "What is Task Decomposition?"}, stream_mode="messages"
+    {"question": user_input}, stream_mode="messages"
 ):
-    print(message.content, end="|")
+    print(message.content, end="")

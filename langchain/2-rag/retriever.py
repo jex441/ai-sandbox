@@ -63,5 +63,7 @@ graph_builder = StateGraph(State).add_sequence([retrieve, generate])
 graph_builder.add_edge(START, "retrieve")
 graph = graph_builder.compile()
 
-response = graph.invoke({"question": "What is this article about?"})
-print(response["answer"])
+for message, metadata in graph.stream(
+    {"question": "What is Task Decomposition?"}, stream_mode="messages"
+):
+    print(message.content, end="|")
